@@ -16,6 +16,18 @@ function getMarkdownFiles(dir) {
         }
     });
 
+    // Сортировка файлов по порядковому номеру в начале имени файла
+    files.sort((a, b) => {
+        const aName = path.basename(a);
+        const bName = path.basename(b);
+        
+        // Извлекаем числовую часть перед "_" и преобразуем в число
+        const aNumber = parseInt(aName.split('_')[0], 10);
+        const bNumber = parseInt(bName.split('_')[0], 10);
+
+        return aNumber - bNumber;
+    });
+
     return files;
 }
 
