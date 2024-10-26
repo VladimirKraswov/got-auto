@@ -1,20 +1,8 @@
 # Неделя 1: Основы Angular
-- Создание и использование компонентов: Структура компонентов, модульность, naming conventions.
-- Жизненный цикл компонентов: ngOnInit, ngOnChanges, ngOnDestroy, ngDoCheck, AfterViewInit, AfterViewChecked, AfterContentInit, AfterContentChecked и их использование.
-- Работа с шаблонным синтаксисом: Интерполяция, связывание свойств и событий, создание двусторонней привязки через [(ngModel)\], разница в использовании атрибутов без квадратных скобок и с ними (\[style\] и style \[class\] и class)
-- Шаблонные переменные: Использование `#templateRef` и доступ к элементам DOM через них.
-- :host, ::ng-deep
-- Создание сервисов: Angular CLI генерация сервисов, аннотация @Injectable().
-- Внедрение зависимостей (DI): Введение в Dependency Injection, providedIn
-- Практика использования сервисов: Передача данных между компонентами через сервисы, использование Subject для передачи событий.
-- Структурные директивы: Практическое использование `*ngIf`, `*ngFor`, `*ngSwitch`.
-- Атрибутивные директивы: Применение динамических классов и стилей с `ngClass` и `ngStyle`.
-- Создание собственных директив: Разработка простой кастомной атрибутивной директивы.
-- Встроенные пайпы: Использование пайпов для форматирования данных (date, number, currency).
-- Создание собственных пайпов: Реализация кастомного пайпа
-- Чистые и нечистые пайпы: Оптимизация пайпов для производительности.
-- Основы RxJS: Разница между Observable и Promise, примеры использования Subject и BehaviorSubject.
-- Операторы RxJS: Основные операторы `map`, `filter`, `tap`, практическое применение. операторы переключения потоков (switchMap, concatMap, mergeMap, exhaustMap), комбинирования потоков (forkJoin, combineLatest, zip, merge, concat, race), отписка через takeUntil/takeUntilDestroyed, startWith, from, of, debounceTime, distinctUntilChanged, share, shareReplay
+- Операторы RxJS: Основные операторы `map`, `filter`, `tap`, практическое применение. 
+- Операторы переключения потоков (switchMap, concatMap, mergeMap, exhaustMap)
+- Комбинирования потоков (forkJoin, combineLatest, zip, merge, concat, race)
+- Отписка через takeUntil/takeUntilDestroyed, startWith, from, of, debounceTime, distinctUntilChanged, share, shareReplay
 - RxJS в компонентах: Интеграция Observable в компоненты через async pipe.
 - Разница холодного и горячего потока, как из одного сделать другой и зачем
 - Основные функциональности: NgIf, NgFor, NgSwitch, NgClass, NgStyle.
