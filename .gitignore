@@ -36,7 +36,8 @@ coverage/
 .cache/
 public/
 
-AngularCourse
+# Data files output and input
+/data
 
 # Parcel-bundler cache (https://parceljs.org/)
 .cache

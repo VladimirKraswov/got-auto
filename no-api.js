@@ -19,7 +19,7 @@ dotenv.config();
 
 // Функция для чтения и парсинга файла content.md
 function parseContentFile() {
-  const contentFilePath = path.join(path.resolve(), 'content.md');
+  const contentFilePath = path.join(path.resolve(), 'data', 'content.md');
   const content = fs.readFileSync(contentFilePath, 'utf8');
 
   const lines = content.split('\n').filter((line) => line.trim() !== '');
@@ -56,7 +56,7 @@ function generatePrompt(chapterTitle, sectionTitle) {
 // Основная функция создания структуры книги и работы с файлами
 async function createBookFromContent() {
   const structure = parseContentFile();
-  const bookDir = path.join(path.resolve(), 'GeneratedBook');
+  const bookDir = path.join(path.resolve(), 'data', 'GeneratedBook');
 
   // Создаем папку для книги, если она не существует
   if (!fs.existsSync(bookDir)) {

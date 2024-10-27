@@ -12,6 +12,9 @@ import hljs from 'highlight.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+const bookName = 'AngularCourse';
+const bookDir = path.join(__dirname, 'data', bookName);
+
 const app = express();
 const PORT = 3000;
 
@@ -220,17 +223,28 @@ app.get('/', (req, res) => {
 app.get('/api/files', async (req, res) => {
   try {
     const folder = req.query.folder;
-    const directoryPath = folder ? path.join(__dirname, 'GeneratedBook', folder) : path.join(__dirname, 'GeneratedBook');
+    const directoryPath = folder ? path.join(bookDir, folder) : bookDir;
 
     const files = await fs.readdir(directoryPath, { withFileTypes: true });
 
-    const fileList = files.map(file => {
-      return {
+    // Сортировка файлов и папок
+    files.sort((a, b) => {
+      const aName = path.basename(a.name);
+      const bName = path.basename(b.name);
+
+      const aNumber = parseInt(aName.split('_')[0], 10);
+      const bNumber = parseInt(bName.split('_')[0], 10);
+
+      return (isNaN(aNumber) ? 0 : aNumber) - (isNaN(bNumber) ? 0 : bNumber);
+    });
+
+    const fileList = files
+      .map(file => ({
         name: file.name,
         path: folder ? path.join(folder, file.name) : file.name,
         type: file.isDirectory() ? 'folder' : (path.extname(file.name) === '.md' ? 'file' : 'other')
-      };
-    }).filter(item => item.type === 'folder' || item.type === 'file'); // Фильтруем только папки и md файлы
+      }))
+      .filter(item => item.type === 'folder' || item.type === 'file');
 
     res.json(fileList);
   } catch (error) {
@@ -247,23 +261,17 @@ app.get('/api/content', async (req, res) => {
       return res.status(400).send('Не указан файл');
     }
 
-    const resolvedPath = path.resolve(__dirname, 'GeneratedBook', filePath);
+    const resolvedPath = path.resolve(bookDir, filePath);
 
-    // Проверка, что файл находится внутри GeneratedBook
-    const generatedBookPath = path.resolve(__dirname, 'GeneratedBook');
-    if (!resolvedPath.startsWith(generatedBookPath)) {
+    if (!resolvedPath.startsWith(bookDir)) {
       return res.status(403).send('Доступ запрещён');
     }
 
-    // Проверка расширения файла
     if (path.extname(resolvedPath) !== '.md') {
       return res.status(400).send('Неподдерживаемый формат файла');
     }
 
-    // Чтение файла
     const data = await fs.readFile(resolvedPath, 'utf8');
-
-    // Преобразование Markdown в HTML
     const htmlContent = marked(data);
 
     res.send(htmlContent);
@@ -272,6 +280,7 @@ app.get('/api/content', async (req, res) => {
     res.status(500).send('Не удалось прочитать файл');
   }
 });
+
 
 // Запуск сервера
 app.listen(PORT, () => {
