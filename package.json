@@ -13,6 +13,7 @@
     "marked": "^4.3.0",
     "open": "^8.4.0",
     "openai": "^4.68.2",
-    "transliteration": "^2.3.5"
+    "transliteration": "^2.3.5",
+    "uuid": "^11.1.0"
   }
 }

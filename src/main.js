@@ -18,9 +18,10 @@ import { processDirectory } from './gpt/generator.js';
 import { startServer } from './reader/index.js';
 import path from 'path';
 import fs from 'fs';
+import { exportCourseToJson } from './utils/exportCourse.js';
 
 // 📌 Получаем аргументы командной строки
-const mode = process.argv[2]; // `init`, `build`, `generate`, `read`
+const mode = process.argv[2]; // `init`, `build`, `generate`, `read`, `export`
 const projectName = process.argv[3]; // Название курса
 
 if (!mode || !projectName) {
@@ -29,6 +30,7 @@ if (!mode || !projectName) {
   console.error('  node src/main.js build <название_курса>        # Создание структуры курса');
   console.error('  node src/main.js generate <название_курса>     # Генерация контента');
   console.error('  node src/main.js read <название_курса>         # Открыть курс для чтения');
+  console.error('  node src/main.js export <название_курса>       # Экспорт курса в JSON');
   process.exit(1);
 }
 
@@ -45,16 +47,20 @@ if (mode === 'init') {
   createCourseStructure(path.join(projectPath, 'content.md'), coursePath);
 } else if (mode === 'generate') {
   console.log(`🤖 Начинаем генерацию контента в папке: ${coursePath}`);
-  processDirectory(projectPath) // Передаем путь к проекту, а не `course/`
+  processDirectory(projectPath)
     .then(() => console.log('🎉 Генерация завершена!'))
     .catch((err) => console.error(`❌ Ошибка: ${err.message}`));
 } else if (mode === 'read') {
-  const coursePath = path.join(projectPath, 'course');
   if (!fs.existsSync(coursePath)) {
     console.error(`❌ Курс не найден: ${coursePath}`);
     process.exit(1);
   }
   startServer(coursePath);
+} else if (mode === 'export') {  // Новая команда
+  console.log(`📤 Экспортируем курс из папки: ${coursePath} в JSON`);
+  exportCourseToJson(projectPath)
+    .then(() => console.log('🎉 Экспорт завершен!'))
+    .catch((err) => console.error(`❌ Ошибка при экспорте: ${err.message}`));
 } else {
   console.error(`❌ Неизвестный режим: ${mode}`);
   process.exit(1);
